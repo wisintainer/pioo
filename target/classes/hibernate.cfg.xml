@@ -43,9 +43,9 @@ Contributor(s):
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/trabalhooo</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.connection.url">jdbc:mysql://us-cdbr-iron-east-01.cleardb.net:3306/heroku_9240177b8c0a2c1</property>
+        <property name="hibernate.connection.username">bf14f8b7fe021c</property>
+        <property name="hibernate.connection.password">97473a9f</property>
         <mapping class="com.quick.model.Usuario"/>
         <mapping class="com.quick.model.Funcionario"/>
         <mapping class="com.quick.model.Massageado"/>
