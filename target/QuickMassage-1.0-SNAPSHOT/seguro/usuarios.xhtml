@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define  name="title">Cadastro Usuarios
+    </ui:define>
+
+    <ui:define name="content">
+        <p:panel id="painelgeral" style="margin-left: 140px">
+            <h:form id="fora">
+                <p:panel  header="Cadastro de usuários do sistema" >
+                    <p:messages showDetail="false" id="mensagens" />
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Nome"/>
+                        <p:inputText value="#{usuarioManagerMB.usuario.nome}" requiredMessage="Digite o nome" required="true"/>
+
+                        <p:outputLabel value="Login"/>
+                        <p:inputText value="#{usuarioManagerMB.usuario.login}" requiredMessage="Digite o login" required="true"/>
+
+                        <p:outputLabel value="Nível de acesso"/>
+                        <p:selectOneMenu value="#{usuarioManagerMB.usuario.nivel}" requiredMessage="Escolha o nível de acesso" required="true">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione" itemValue="" />
+                            <f:selectItem itemLabel="Admin" itemValue="admin" />
+                            <f:selectItem itemLabel="Usuário" itemValue="usr" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Senha"/>
+                        <p:password promptLabel="Digite uma senha" goodLabel="Bom" weakLabel="Você Consegue fazer melhor" strongLabel="Ótimo" feedback="true" value="#{usuarioManagerMB.usuario.passwd}" requiredMessage="Escolha uma senha" required="true"/>
+                    </p:panelGrid>
+                    <p:commandButton class="success-btn" actionListener="#{usuarioManagerMB.cadastrarUsuario}" update="painelgeral" value="Cadastrar"/>
+                </p:panel>
+            </h:form>
+
+
+            <h:form id="form">
+                <p:panel id="painel-tabela"  header="Usuários">
+                    <p:dataTable rows="4"  paginator="true"  selection="true" id="tabela" var="usuario" value="#{usuarioManagerMB.usuarios}">
+                        <p:column sortBy="#{usuario.id}" headerText="Id">
+                            <p:outputLabel value="#{usuario.id}"/>
+                        </p:column>
+                        <p:column sortBy="#{usuario.nome}" headerText="Nome">
+                            <p:outputLabel value="#{usuario.nome}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{usuario.login}" headerText="Login">
+                            <p:outputLabel value="#{usuario.login}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{usuario.nivel}" headerText="Nível de acesso">
+                            <p:outputLabel value="#{usuario.nivel}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{usuario.passwd}" headerText="Senha">
+                            <p:outputLabel value="******"/>
+                        </p:column>
+
+                        <p:column headerText="Ações">
+                            <p:commandButton id="btn-edit" class="warning-btn" process="@this" icon="fa fa-pencil" update="editform:detalheedit"  oncomplete="PF('editDialog').show()" title="Editar">
+                                <f:setPropertyActionListener value="#{usuario}" target="#{usuarioManagerMB.usuarioselecionado}" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipTEdit" for="btn-edit" value="Editar Cadastro" trackMouse="true" />
+                            <p:commandButton id="btn-delete" update="deleteform:detalhe2"  class="danger-btn" process="@this" icon="fa fa-trash"  oncomplete="PF('deleteDialog').show()" title="Excluir">
+                                <f:setPropertyActionListener value="#{usuario}" target="#{usuarioManagerMB.usuarioselecionado}" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipTDelete" for="btn-delete" value="Excluir Cadastro" trackMouse="true" />
+                        </p:column> 
+
+                    </p:dataTable>
+
+                </p:panel>
+            </h:form>
+
+
+
+
+
+            <p:dialog resizable="true" appendTo="@(body)" closable="false" header="Modificar usuário do sistema" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" >
+
+                <h:form id="editform">
+                    <p:outputPanel id="detalheedit" style="text-align:center;">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="Id"/>
+                            <p:outputLabel value="#{usuarioManagerMB.usuarioselecionado.id}"/>
+
+                            <p:outputLabel value="Nome"/>
+                            <p:inputText value="#{usuarioManagerMB.usuarioselecionado.nome}" />
+
+                            <p:outputLabel value="Login"/>
+                            <p:inputText value="#{usuarioManagerMB.usuarioselecionado.login}" />
+
+                            <p:outputLabel value="Senha"/>
+                            <p:inputText value="#{usuarioManagerMB.usuarioselecionado.passwd}" />
+
+                            <p:outputLabel value="Nível"/>
+                            <p:selectOneMenu value="#{usuarioManagerMB.usuarioselecionado.nivel}" >
+                                <f:selectItem noSelectionOption="true" itemLabel="Selecione" itemValue="" />
+                                <f:selectItem itemLabel="Admin" itemValue="admin" />
+                                <f:selectItem itemLabel="Usuário" itemValue="usr" />
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+                        <p:commandButton oncomplete="PF('editDialog').hide();" value="Cancelar"/>
+                        <p:commandButton update="form:tabela,fora:mensagens" oncomplete="PF('editDialog').hide();"  process="@form"    style="background-color: #CB5C00" action="#{usuarioManagerMB.alterarUsuario}"  value="Confirmar"/>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+
+
+            <p:dialog resizable="true" appendTo="@(body)" closable="false" header="Confirmação de exclusão" widgetVar="deleteDialog" modal="true" showEffect="fade" hideEffect="fade" >
+                <h:form id="deleteform">
+                    <p:outputPanel id="detalhe2" style="text-align:center;">
+                        <p:panelGrid   columns="2"  columnClasses="label,value">
+
+                            <p:outputLabel value="Deseja realmente excluir o usuário #{usuarioManagerMB.usuarioselecionado.nome} ?" />
+
+                        </p:panelGrid>
+                        <p:commandButton oncomplete="PF('deleteDialog').hide();" value="Cancelar"/>
+                        <p:commandButton update=":form:tabela,fora:mensagens" style="background-color: #CB5C00" action="#{usuarioManagerMB.excluirUsuario}" oncomplete="PF('deleteDialog').hide();" value="Confirmar"/>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+
+
+
+
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,115 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/avalon">
+
+    <div class="topbar clearfix">
+        <div class="topbar-left">   
+            <span style="color: #f7f7f7; font-size: 12px;" >
+                PROJETO E IMPLEMENTAÇÃO OO
+            </span>
+
+        </div>
+
+        <div class="topbar-right">
+            <!--            <a id="menu-button" href="#">
+                            <i class="fa fa-angle-left"></i>
+                        </a>-->
+
+            <a id="topbar-menu-button" href="#">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul class="topbar-items fadeInDown animated">
+                <ui:fragment rendered="#{guestPreferences.profileMode == 'overlay'||guestPreferences.menuLayout == 'menu-layout-static menu-layout-horizontal'}">
+                    <li class="profile-item">
+                        <a href="#">                            
+                            <p:graphicImage name="images/avatar.png" library="avalon-layout" styleClass="profile-image" style="border: 0 none"/>
+                            <span class="topbar-item-name">Isabel Lopez</span>
+                            <span class="topbar-item-role">Marketing</span>
+                        </a>
+
+                        <ul class="layout-menu animated">
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-user"></i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-user-secret"></i>
+                                    <span>Privacy</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-cog"></i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-sign-out"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ui:fragment>
+                <li>
+                    <a href="#">
+                        <i class="topbar-icon fa fa-sign-in"></i>
+                        <span class="topbar-item-name">Settings</span>
+                    </a>
+                    <ul class="layout-menu animated">
+                        <li role="menuitem">
+                            <h:form>
+                                <p:commandLink  action="#{usuarioBean.logout}"  value="Sair do sistema"/>    
+                            </h:form>Ï
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+
+                    <ul class="layout-menu animated">
+                        <li role="menuitem">
+                            <a href="#">
+                                <i class="fa fa-fw fa-tasks"></i>
+                                <span>Pending tasks</span>
+                            </a>
+                        </li>
+                        <li role="menuitem">
+                            <a href="#">
+                                <i class="fa fa-fw fa-calendar-check-o"></i>
+                                <span>Meeting today at 3pm</span>
+                            </a>
+                        </li>
+                        <li role="menuitem">
+                            <a href="#">
+                                <i class="fa fa-fw fa-download"></i>
+                                <span>Download documents</span>
+                            </a>
+                        </li>
+                        <li role="menuitem">
+                            <a href="#">
+                                <i class="fa fa-fw fa-plane"></i>
+                                <span>Book flight</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!--                <li class="search-item">
+                                    <div class="topbar-search">
+                                        <input type="text" placeholder="Search" />
+                                        <i class="fa fa-search" />
+                                    </div>
+                                </li>-->
+            </ul>
+        </div>
+    </div>
+
+</ui:composition>

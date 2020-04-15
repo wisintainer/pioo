@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define  name="title">Agendamento</ui:define>
+
+    <ui:define name="content">
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <img src="../images/loader.gif" alt=""/>
+        </p:dialog>
+        <p:panel header="Agendamento de hoje" style="margin-left: 140px">
+            <p:growl id="grow"/>
+            <h:form id="frm-pesquisa">
+                <p:commandButton id="btn-pesquisar" process="@this" update="tabela,btnconfirmar" icon="fa fa-star" action="#{quickManagerMB.sorteio}" class="primary-btn" value="Verificar quem está na vez"/>  
+                <p:panel header="Massageados de hoje">
+                    <p:dataTable emptyMessage="Faça a verificação de quem está na vez"  rows="5"   selection="true" id="tabela" var="massageado" value="#{quickManagerMB.massagem.massageados}" >
+                        <p:column headerText="Nome">
+                            <p:outputLabel value="#{massageado.nome}"/>
+                        </p:column>
+                        <p:column headerText="Área">
+                            <p:outputLabel value="#{massageado.area}"/>
+                        </p:column>
+                        <p:column headerText="Telefone">
+                            <p:outputLabel value="#{massageado.telefone}"/>
+                        </p:column>
+                        <p:column headerText="E-mail">
+                            <p:outputLabel value="#{massageado.email}"/>
+                        </p:column>
+                        <p:column headerText="Última massagem">
+                            <p:outputLabel value="#{massageado.ultimamassagemAsString}"/>
+                        </p:column>
+                        <p:column style="text-align: center" headerText="Ações">
+                            <p:commandButton value="Não poderá comparecer" update="dialiog-postergar" oncomplete="PF('widget-postergar').show()" id="btn-npv" icon="fa fa-fast-forward" class="info-btn">
+                                <f:setPropertyActionListener value="#{massageado}" target="#{quickManagerMB.massageadoSelecionado}" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipNpv" for="btn-npv" value="Não poderá hoje" trackMouse="true" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+                <p:commandButton disabled="#{empty quickManagerMB.massagem.massageados}" id="btnconfirmar"  update="tabela,grow" icon="fa fa-check" action="#{quickManagerMB.confirmarMassagem}" class="success-btn" value="Confirmar"/>
+
+            </h:form>
+        </p:panel>
+
+
+        <p:dialog modal="true" id="dialiog-postergar" widgetVar="widget-postergar">
+            <h:form id="frm-dialog-postergar">
+                <p:panelGrid>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:outputLabel value="Deseja postergar a massagem de #{quickManagerMB.massageadoSelecionado.nome}? Será provavelmente indicado na próxima Quick"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:commandButton  update="frm-pesquisa:tabela, grow"  oncomplete="PF('widget-postergar').hide()" action="#{quickManagerMB.adiarMassagem}" icon="fa fa-check" class="success-btn" value="Sim"/>
+
+                            <p:commandButton oncomplete="PF('widget-postergar').hide()" icon="fa fa-times-circle" class="danger-btn" value="Não"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>
